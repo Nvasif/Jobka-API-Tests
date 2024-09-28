@@ -1,12 +1,18 @@
-describe('Jobka API - Test job search by id', () => {
+/// <reference types = "Cypress"/>
+
+describe('Jobka API - Job Search Tests', () => {
 
     const baseUrl = 'http://api.jobka.net:8081/jobs';
 
-    it('should get the job by id', () => {
+    it('should retrieve a job by id', () => {
         cy.request(`${baseUrl}?id=631cbe04431ba4738af3c704`).then((response) => {
+            // Logging the response for debugging purposes
+            console.log(response);
+            // Checking the status code
             expect([200, 204]).to.include(response.status);
 
             if (response.status === 200) {
+                // Asserting that the job content is returned and matches the id
                 expect(response.body).to.have.property('content');
                 expect(response.body.content).to.have.length(1);
                 expect(response.body.content[0].id).to.equal('631cbe04431ba4738af3c704');
@@ -14,8 +20,11 @@ describe('Jobka API - Test job search by id', () => {
         });
     });
 
-    it('should get the jobs by date', () => {
+    it('should retrieve jobs by date', () => {
         cy.request(`${baseUrl}?date=2021-07-11`).then((response) => {
+            // Logging the response for debugging purposes
+            console.log(response);
+            // Checking the status code and that jobs are returned
             expect(response.status).to.equal(200);
 
             expect(response.body).to.have.property('content');
@@ -23,10 +32,11 @@ describe('Jobka API - Test job search by id', () => {
         });
     });
 
-
-    it('should get the jobs from the company', () => {
+    it('should retrieve jobs from the company "legion"', () => {
         cy.request(`${baseUrl}?company=legion`).then((response) => {
-            expect(response.status).to.eq(200);
+            // Logging the response for debugging purposes
+            console.log(response);
+            expect(response.status).to.equal(200);
 
             expect(response.body).to.have.property('content');
             expect(response.body.content).to.have.length.greaterThan(0);
@@ -35,10 +45,10 @@ describe('Jobka API - Test job search by id', () => {
         });
     });
 
-    it('should handle the case where jobs are found for the location "Toronto"', () => {
-        cy.request({
-            url: `${baseUrl}?location=Toronto`,
-        }).then((response) => {
+    it('should retrieve jobs by location "Toronto"', () => {
+        cy.request(`${baseUrl}?location=Toronto`).then((response) => {
+            // Logging the response for debugging purposes
+            console.log(response);
             expect([200, 204]).to.include(response.status);
 
             if (response.status === 200) {
@@ -51,10 +61,10 @@ describe('Jobka API - Test job search by id', () => {
         });
     });
 
-    it('should handle the case where jobs are found by description "salary"', () => {
-        cy.request({
-            url: `${baseUrl}?description=salary`,
-        }).then((response) => {
+    it('should retrieve jobs by description "salary"', () => {
+        cy.request(`${baseUrl}?description=salary`).then((response) => {
+            // Logging the response for debugging purposes
+            console.log(response);
             expect([200, 204]).to.include(response.status);
 
             if (response.status === 200) {
@@ -67,10 +77,10 @@ describe('Jobka API - Test job search by id', () => {
         });
     });
 
-    it('should handle the case where jobs are found for location "Toronto" and company "Apple"', () => {
-        cy.request({
-            url: `${baseUrl}?location=Toronto&company=Apple`,
-        }).then((response) => {
+    it('should retrieve jobs by location "Toronto" and company "Apple"', () => {
+        cy.request(`${baseUrl}?location=Toronto&company=Apple`).then((response) => {
+            // Logging the response for debugging purposes
+            console.log(response);
             expect([200, 204]).to.include(response.status);
 
             if (response.status === 200) {
@@ -84,8 +94,5 @@ describe('Jobka API - Test job search by id', () => {
             }
         });
     });
-
-
-
 
 });
